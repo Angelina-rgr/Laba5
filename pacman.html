@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Третье задание</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .button_panel {
+            max-width: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .right {
+            margin-left: 25px;
+        }
+
+        #img {
+            display: inline-block;
+            position: relative;
+        }
+        #imgPoint {
+            display: inline-block;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div class="button_panel">
+    <label>Осталось еды:</label>
+    <input type="text" placeholder="Сколько еды" id="eat">
+    <label>Количество ходов</label>
+    <input type="text" placeholder="0" id="step" readonly="readonly">
+    <input type="button" value="Для игры нажимать тут" id="kinput">
+</div>
+<img src="pacman.png" alt="pacman" id="img" style="width: 100px;height: 100px;top:100px;left:100px;">
+
+<img src="eat.png" alt="eat" id="imgPoint" style="width: 50px;height: 50px;top:100px;left:100px;">
+<script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+    kinput.onkeydown = handle;
+
+    function handle(e) {
+        if (e.key == "ArrowRight") {
+            $("#img").animate({left: "+=100"})
+            document.getElementById("step").value = 1 + Number(document.getElementById("step").value)
+        }
+        if (e.key == "ArrowDown") {
+            $("#img").animate({top: "+=100"})
+            document.getElementById("step").value = 1 + Number(document.getElementById("step").value)
+        }
+        if (e.key == "ArrowUp") {
+            $("#img").animate({top: "-=100"})
+            document.getElementById("step").value = 1 + Number(document.getElementById("step").value)
+        }
+        if (e.key == "ArrowLeft") {
+            $("#img").animate({left: "-=100"})
+            document.getElementById("step").value = 1 + Number(document.getElementById("step").value)
+        }
+        if(touchTwins(document.getElementById("img"),document.getElementById("imgPoint"))){
+            if(document.getElementById("eat").value!=0) {
+                $("#imgPoint").animate({top: randomInteger(100, 600)})
+                $("#imgPoint").animate({left: randomInteger(100, 600)})
+                document.getElementById("eat").value-=1
+            }else{
+                alert("Еда кончилась")
+            }
+        }
+
+
+    }
+
+    function randomInteger(min, max) {
+        let rand = min + Math.random() * (max + 1 - min);
+        return Math.floor(rand);
+    }
+
+    function touchTwins(_el1, _el2) {
+        var
+            el1_TopSTART = parseInt(_el1.style.left, 10),
+            el1_TopEND = el1_TopSTART + parseInt(_el1.style.width, 10),
+            el1_leftSTART = parseInt(_el1.style.top, 10),
+            el1_leftEND = el1_leftSTART + parseInt(_el1.style.height, 10),
+            el2_TopSTART = parseInt(_el2.style.left, 10),
+            el2_TopEND = el2_TopSTART + parseInt(_el2.style.width, 10),
+            el2_leftSTART = parseInt(_el2.style.top, 10),
+            el2_leftEND = el2_leftSTART + parseInt(_el2.style.height, 10)
+        if (
+            el2_TopSTART > el1_TopEND ||
+            el1_TopSTART > el2_TopEND ||
+            el2_leftSTART > el1_leftEND ||
+            el1_leftSTART > el2_leftEND
+        ) {
+            return false
+        } else {
+            return true
+        }
+    }
+</script>
+</body>
+</html>
